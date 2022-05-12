@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "16396604127",
+    "project_id": "scanner-table-476a1",
+    "storage_bucket": "scanner-table-476a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16396604127:android:99a6322b265cf1de4f8f6a",
+        "android_client_info": {
+          "package_name": "com.example.scannertable"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "16396604127-21092gkv0nfd3pr5v81qi9imnaifqd2k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSpCeYHmWxGsH7cPcqipCndV34GKuIx7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "16396604127-21092gkv0nfd3pr5v81qi9imnaifqd2k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_purple"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="210dp"
+        android:layout_height="297dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/todo" />
+
+    <Button
+        android:id="@+id/btBt"
+        style="@style/RoundedCornerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.537">
+        <Button
+            android:id="@+id/btOpenCamera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/RoundedCornerButton"
+            android:text="@string/open_camera"/>
+        <Button
+            android:id="@+id/btChooseTemplate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/RoundedCornerButton"
+            android:text="@string/choose_template" />
+        <Button
+            android:id="@+id/btChoosePath"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            style="@style/RoundedCornerButton"
+            android:text="@string/choose_path" />
+        <Button
+            android:id="@+id/btCreateTemplate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/RoundedCornerButton"
+            android:text="@string/create_template" />
+        <Button
+            android:id="@+id/btMainConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/RoundedCornerButton"
+            android:text="@string/ok"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

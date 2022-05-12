@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ScannerTable</string>
+    <string name="open_camera">Open Camera</string>
+    <string name="choose_template">Choose template</string>
+    <string name="choose_path">Choose path</string>
+    <string name="create_template">Create template</string>
+    <string name="ok">OK</string>
+    <string name="todo">TODO</string>
+</resources>
