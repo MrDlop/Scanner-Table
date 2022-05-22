@@ -5,13 +5,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Surface;
@@ -27,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.common.util.IOUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -37,11 +41,20 @@ import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,9 +69,31 @@ public class MainActivity extends AppCompatActivity {
             pathToTpl = null;
     public static JSONObject template = null;
     public ImageView imageView = null;
+    public static TemplateJSON templateJSON;
     //----------------------------------------------------------------------------------------------
 
-
+    public TemplateJSON getUser(String response) throws JSONException {
+        JSONObject userJson = new JSONObject(response);
+        int n = userJson.getInt("n");
+        JSONArray sizeJSON = userJson.getJSONArray("size");
+        int[] size = new int[2];
+        for (int i = 0; i < sizeJSON.length(); ++i) {
+            size[i] = sizeJSON.getInt(i);
+        }
+        int[][] fields = new int[n][4];
+        for (int i = 0; i < n; ++i) {
+            JSONArray field = userJson.getJSONArray("field_" + Integer.toString(i));
+            for (int j = 0; j < field.length() - 1; ++j) {
+                fields[i][j] = field.getInt(j);
+            }
+        }
+        String[] fields_name = new String[n];
+        for (int i = 0; i < n; ++i) {
+            JSONArray field = userJson.getJSONArray("field_" + Integer.toString(i));
+            fields_name[i] = field.getString(4);
+        }
+        return new TemplateJSON(n, size, fields, fields_name);
+    }
 
 
     @Override
@@ -68,9 +103,13 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case 9998:
                 if (data != null) {
-                    pathToTpl = data.getData().getPath();
-                    Log.i("Test", "Result URI " + pathToTpl);
-                    WTmp = true;
+                    Log.i("Test", "Result URI " + data.getData().getPath());
+                    Log.i("Test", "Result URI " + data.getData().toString());
+                    path = data.getData().getPath().replace("/document/primary:",
+                            "/storage/emulated/0/");
+                    File file = new File(path);
+                    Log.i("OK", "------------OK-----------------");
+                    // File reader
                 }
                 break;
             case 9999:
@@ -199,52 +238,5 @@ public class MainActivity extends AppCompatActivity {
     private void enableCamera() {
         Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
-    }
-
-    private void RecognizeText() {
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(CameraService.image);
-        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
-                .getOnDeviceTextRecognizer();
-
-        Task<FirebaseVisionText> result =
-                detector.processImage(image)
-                        .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
-                            @Override
-                            public void onSuccess(FirebaseVisionText firebaseVisionText) {
-                                // Task completed successfully
-                                // ...
-                            }
-                        })
-                        .addOnFailureListener(
-                                new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        // Task failed with an exception
-                                        // ...
-                                    }
-                                });
-        String resultText = result.getResult().getText();
-        for (FirebaseVisionText.TextBlock block : result.getResult().getTextBlocks()) {
-            String blockText = block.getText();
-            Float blockConfidence = block.getConfidence();
-            List<RecognizedLanguage> blockLanguages = block.getRecognizedLanguages();
-            Point[] blockCornerPoints = block.getCornerPoints();
-            Rect blockFrame = block.getBoundingBox();
-            for (FirebaseVisionText.Line line : block.getLines()) {
-                String lineText = line.getText();
-                Float lineConfidence = line.getConfidence();
-                List<RecognizedLanguage> lineLanguages = line.getRecognizedLanguages();
-                Point[] lineCornerPoints = line.getCornerPoints();
-                Rect lineFrame = line.getBoundingBox();
-                for (FirebaseVisionText.Element element : line.getElements()) {
-                    String elementText = element.getText();
-                    Float elementConfidence = element.getConfidence();
-                    List<RecognizedLanguage> elementLanguages = element.getRecognizedLanguages();
-                    Point[] elementCornerPoints = element.getCornerPoints();
-                    Rect elementFrame = element.getBoundingBox();
-                }
-            }
-        }
-
     }
 }
