@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -71,5 +72,10 @@ public class RecognizeActivity extends AppCompatActivity {
             //добавляем елементы в linearlayout
             linear.addView(view);
         }
+        Button btOKTwo = findViewById(R.id.RecognizeOK);
+        btOKTwo.setOnClickListener(view -> {
+            finish();
+
+        });
     }
 }

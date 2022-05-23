@@ -1,9 +1,5 @@
 package com.example.scannertable;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -19,16 +15,11 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 public class CameraActivity extends AppCompatActivity {
@@ -73,11 +64,11 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        Button btConfirm = (Button) findViewById(R.id.btConfirm);
-        textureView = (TextureView) findViewById(R.id.textureView);
+        Button btConfirm = findViewById(R.id.btConfirm);
+        textureView = findViewById(R.id.textureView);
 
 //        try {
-//            JSONObject size = MainActivity.template.getJSONObject("size");
+//            JSONObject size = ActivityAdd.template.getJSONObject("size");
 //            int width = size.getInt("x");
 //            int height = size.getInt("y");
 //            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
@@ -87,23 +78,20 @@ public class CameraActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
-        btConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (myCamera.isOpen()) {
-                    myCamera.closeCamera();
-                }
-                CameraService.image = textureView.getBitmap();
-                MainActivity.WPhoto = true;
-                try {
-                    angle = getRotationCompensation();
-                    Log.i(LOG_TAG, "Angle: " + Integer.toString(angle));
-                } catch (CameraAccessException e) {
-                    e.printStackTrace();
-                }
-                stopBackgroundThread();
-                finish();
+        btConfirm.setOnClickListener(view -> {
+            if (myCamera.isOpen()) {
+                myCamera.closeCamera();
             }
+            CameraService.image = textureView.getBitmap();
+            ActivityAdd.WPhoto = true;
+            try {
+                angle = getRotationCompensation();
+                Log.i(LOG_TAG, "Angle: " + angle);
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+            stopBackgroundThread();
+            finish();
         });
 
         mCameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);

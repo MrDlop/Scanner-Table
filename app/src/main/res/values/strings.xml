@@ -6,4 +6,5 @@
     <string name="create_template">Create template</string>
     <string name="ok">OK</string>
     <string name="todo">TODO</string>
+    <string name="add_variant">Add variant</string>
 </resources>

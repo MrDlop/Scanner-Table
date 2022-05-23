@@ -14,10 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ScannerTable">
+        <activity
+            android:name=".ActivityAdd"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-            android:value="ocr" />
-        <!-- To use multiple models: android:value="ocr,model2,model3" -->
+            android:value="ocr" /> <!-- To use multiple models: android:value="ocr,model2,model3" -->
         <activity
             android:name=".RecognizeActivity"
             android:exported="false" />
@@ -33,7 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
