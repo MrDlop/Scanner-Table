@@ -28,10 +28,11 @@ public class RecognizeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recognize);
 
-        List<View> allEds = new ArrayList<View>();
-        final LinearLayout linear = (LinearLayout) findViewById(R.id.layout);
+        List<View> attributes = new ArrayList<>();
+        final LinearLayout linear = findViewById(R.id.layout);
+        int x1, x2, y1, y2;
+
         for (int i = 0; i < MainActivity.templateJSON.getN(); ++i) {
-            int x1, x2, y1, y2;
             int[] arr = MainActivity.templateJSON.getFieldN(i);
             x1 = arr[0];
             y1 = arr[1];
@@ -61,12 +62,12 @@ public class RecognizeActivity extends AppCompatActivity {
                                     });
             String resultText = result.getResult().getText();
             final View view = getLayoutInflater().inflate(R.layout.layout, null);
-            TextView textView = (TextView) view.findViewById(R.id.eq);
+            TextView textView = view.findViewById(R.id.eq);
             textView.setText(MainActivity.templateJSON.getFieldName(i));
-            EditText text = (EditText) view.findViewById(R.id.ed);
+            EditText text = view.findViewById(R.id.ed);
             text.setText(resultText);
             //добавляем все что создаем в массив
-            allEds.add(view);
+            attributes.add(view);
             //добавляем елементы в linearlayout
             linear.addView(view);
         }

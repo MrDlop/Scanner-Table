@@ -1,45 +1,20 @@
 package com.example.scannertable;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.FileUtils;
 import android.util.Log;
-import android.util.SparseIntArray;
-import android.view.Surface;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import com.google.android.gms.common.util.IOUtils;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
-import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
-import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,15 +22,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     //-----------------------------Initialize values------------------------------------------------
@@ -82,14 +50,14 @@ public class MainActivity extends AppCompatActivity {
         }
         int[][] fields = new int[n][4];
         for (int i = 0; i < n; ++i) {
-            JSONArray field = userJson.getJSONArray("field_" + Integer.toString(i));
+            JSONArray field = userJson.getJSONArray("field_" + i);
             for (int j = 0; j < field.length() - 1; ++j) {
                 fields[i][j] = field.getInt(j);
             }
         }
         String[] fields_name = new String[n];
         for (int i = 0; i < n; ++i) {
-            JSONArray field = userJson.getJSONArray("field_" + Integer.toString(i));
+            JSONArray field = userJson.getJSONArray("field_" + i);
             fields_name[i] = field.getString(4);
         }
         return new TemplateJSON(n, size, fields, fields_name);
@@ -142,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } catch (Throwable t) {
             Toast.makeText(getApplicationContext(),
-                    "Exception: " + t.toString(),
+                    "Exception: " + t,
                     Toast.LENGTH_LONG).show();
         }
     }
@@ -153,13 +121,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btOpenCamera = (Button) findViewById(R.id.btOpenCamera);
-        Button btChoosePath = (Button) findViewById(R.id.btChoosePath);
-        Button btCreateTemplate = (Button) findViewById(R.id.btCreateTemplate);
-        Button btChooseTemplate = (Button) findViewById(R.id.btChooseTemplate);
-        Button btBt = (Button) findViewById(R.id.btBt);
-        Button btConfirm = (Button) findViewById(R.id.btMainConfirm);
-        imageView = (ImageView) findViewById(R.id.imageView);
+        Button btOpenCamera = findViewById(R.id.btOpenCamera);
+        Button btChoosePath = findViewById(R.id.btChoosePath);
+        Button btCreateTemplate = findViewById(R.id.btCreateTemplate);
+        Button btChooseTemplate = findViewById(R.id.btChooseTemplate);
+        Button btBt = findViewById(R.id.btBt);
+        Button btConfirm = findViewById(R.id.btMainConfirm);
+        imageView = findViewById(R.id.imageView);
 
         btOpenCamera.setOnClickListener(view -> {
             if (hasCameraPermission()) {
@@ -176,11 +144,8 @@ public class MainActivity extends AppCompatActivity {
             i.addCategory(Intent.CATEGORY_DEFAULT);
             startActivityForResult(Intent.createChooser(i, "Choose directory"), 9999);
         }); // Ok
-        btCreateTemplate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btCreateTemplate.setOnClickListener(view -> {
 
-            }
         });
         btChooseTemplate.setOnClickListener(view -> {
             Intent i = new Intent(Intent.ACTION_GET_CONTENT);
@@ -199,22 +164,19 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setImageBitmap(CameraService.image);
             }
         }); // Ok
-        btConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (WPath) {
-                    if (WTmp) {
-                        if (WPhoto) {
-
-                        } else {
-                            Toast.makeText(MainActivity.this, "Photo is None", Toast.LENGTH_SHORT).show();
-                        }
+        btConfirm.setOnClickListener(view -> {
+            if (WPath) {
+                if (WTmp) {
+                    if (WPhoto) {
+                        enableRecognize();
                     } else {
-                        Toast.makeText(MainActivity.this, "Template is None", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Photo is None", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(MainActivity.this, "Path is None", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Template is None", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(MainActivity.this, "Path is None", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -237,6 +199,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void enableCamera() {
         Intent intent = new Intent(this, CameraActivity.class);
+        startActivity(intent);
+    }
+
+    private void enableRecognize(){
+        Intent intent = new Intent(this, RecognizeActivity.class);
         startActivity(intent);
     }
 }
