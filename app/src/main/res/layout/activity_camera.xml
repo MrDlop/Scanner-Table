@@ -21,9 +21,9 @@
         style="@style/RoundedCornerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints"
-        android:text="OK"/>
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

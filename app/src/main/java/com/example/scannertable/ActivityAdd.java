@@ -16,7 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 public class ActivityAdd extends AppCompatActivity {
-
+    //-----------------------------Initialize values------------------------------------------------
     private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
     private static final int CAMERA_REQUEST_CODE = 10;
 
@@ -35,7 +35,8 @@ public class ActivityAdd extends AppCompatActivity {
             case 9994:
                 if (CameraService.image != null) {
                     imageView.setImageBitmap(CameraService.image);
-                }break;
+                }
+                break;
         }
     }
 
@@ -55,14 +56,14 @@ public class ActivityAdd extends AppCompatActivity {
             } else {
                 requestPermission();
             }
-        }); // Ok
+        });
         btOK.setOnClickListener(view -> {
             if (WPhoto) {
                 enableRecognize();
             } else {
                 Toast.makeText(ActivityAdd.this, "Photo is None", Toast.LENGTH_SHORT).show();
             }
-        }); // Ok
+        });
 
     }
 

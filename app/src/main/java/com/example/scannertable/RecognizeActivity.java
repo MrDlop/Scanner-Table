@@ -38,17 +38,13 @@ public class RecognizeActivity extends AppCompatActivity {
             x2 = arr[2];
             y2 = arr[3];
             Bitmap bitmap = Bitmap.createBitmap(CameraService.image, x1, y1, x2 - x1, y2 - y1);
-            Log.i("Test", "ON 2");
             FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
             FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                     .getOnDeviceTextRecognizer();
-            Log.i("Test", "ON 3");
             Task<FirebaseVisionText> result = detector.processImage(image);
-            Log.i("Test", "ON 4");
             try {
                 resultText = Objects.requireNonNull(result.getResult()).getText();
-                Log.i("Test", "ON 5");
-            }catch (Exception e){
+            } catch (Exception e) {
                 resultText = "No found";
                 Log.e("Test", e.toString());
             }

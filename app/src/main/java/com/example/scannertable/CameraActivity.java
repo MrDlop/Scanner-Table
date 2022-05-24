@@ -22,7 +22,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 
 public class CameraActivity extends AppCompatActivity {
     //-----------------------------Initialize values------------------------------------------------
-    public static final String LOG_TAG = "myLogs";
+    public static final String LOG_TAG = "Test";
 
     public TextureView textureView;
 
@@ -109,6 +109,7 @@ public class CameraActivity extends AppCompatActivity {
         startBackgroundThread();
 
     }
+
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
         ORIENTATIONS.append(Surface.ROTATION_90, 0);

@@ -7,4 +7,6 @@
     <string name="ok">OK</string>
     <string name="todo">TODO</string>
     <string name="add_variant">Add variant</string>
+    <string name="json_text">JSON text</string>
+    <string name="no_found">No found</string>
 </resources>

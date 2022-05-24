@@ -1,10 +1,10 @@
 package com.example.scannertable;
 
 public class TemplateJSON {
-    private int n;
-    private int[] size;
-    private int[][] field;
-    private String[] field_name;
+    private final int n;
+    private final int[] size;
+    private final int[][] field;
+    private final String[] field_name;
 
     TemplateJSON(int n, int[] size, int[][] field, String[] field_name) {
         this.n = n;
@@ -16,15 +16,16 @@ public class TemplateJSON {
     int getN() {
         return n;
     }
-    int[] getSize(){
+
+    int[] getSize() {
         return size;
     }
 
-    int[] getFieldN(int n){
+    int[] getFieldN(int n) {
         return field[n];
     }
 
-    String getFieldName(int n){
+    String getFieldName(int n) {
         return field_name[n];
     }
 }

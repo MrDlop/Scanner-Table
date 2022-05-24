@@ -38,11 +38,10 @@ public class CameraService {
     }
 
 
-
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener
             = reader -> {
 
-            };
+    };
 
 
     private final CameraDevice.StateCallback mCameraCallback = new CameraDevice.StateCallback() {

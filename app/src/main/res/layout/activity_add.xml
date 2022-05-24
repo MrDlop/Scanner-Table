@@ -12,11 +12,11 @@
         android:layout_width="210dp"
         android:layout_height="297dp"
         android:layout_marginTop="32dp"
+        android:contentDescription="@string/todo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/todo" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="292dp"
@@ -28,18 +28,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.537">
+
         <Button
             android:id="@+id/btOpenCamera"
+            style="@style/RoundedCornerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/RoundedCornerButton"
-            android:text="@string/open_camera"/>
+            android:text="@string/open_camera" />
+
         <Button
             android:id="@+id/btAddOkOne"
+            style="@style/RoundedCornerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/RoundedCornerButton"
-            android:text="@string/ok"/>
+            android:text="@string/ok" />
 
     </LinearLayout>
 
