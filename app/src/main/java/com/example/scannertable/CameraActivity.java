@@ -4,7 +4,6 @@ import android.content.Context;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.RequiresApi;
@@ -67,17 +65,6 @@ public class CameraActivity extends AppCompatActivity {
         Button btConfirm = findViewById(R.id.btConfirm);
         textureView = findViewById(R.id.textureView);
 
-//        try {
-//            JSONObject size = ActivityAdd.template.getJSONObject("size");
-//            int width = size.getInt("x");
-//            int height = size.getInt("y");
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
-//            textureView.setLayoutParams(params);
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
         btConfirm.setOnClickListener(view -> {
             if (myCamera.isOpen()) {
                 myCamera.closeCamera();
@@ -100,16 +87,11 @@ public class CameraActivity extends AppCompatActivity {
 
             for (String cameraID : mCameraManager.getCameraIdList()) {
                 Log.i(LOG_TAG, "cameraID: " + cameraID);
-                int id = Integer.parseInt(cameraID);
                 CameraCharacteristics cc = mCameraManager.getCameraCharacteristics(cameraID);
-                // Получения списка выходного формата, который поддерживает камера
-                StreamConfigurationMap configurationMap =
-                        cc.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-
                 //  Определение какая камера куда смотрит
-                int Faceing = cc.get(CameraCharacteristics.LENS_FACING);
+                int faceing = cc.get(CameraCharacteristics.LENS_FACING);
                 // создаем обработчик для камеры
-                if (Faceing == CameraCharacteristics.LENS_FACING_BACK) {
+                if (faceing == CameraCharacteristics.LENS_FACING_BACK) {
                     this.cameraID = cameraID;
                     myCamera = new CameraService(this, mCameraManager, cameraID);
                     Log.i(LOG_TAG, "Camera with: ID " + cameraID + " is BACK CAMERA  ");
@@ -138,7 +120,6 @@ public class CameraActivity extends AppCompatActivity {
      * Get the angle by which an image must be rotated given the device's current
      * orientation.
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private int getRotationCompensation()
             throws CameraAccessException {
         // Get the device's current rotation relative to its "native" orientation.

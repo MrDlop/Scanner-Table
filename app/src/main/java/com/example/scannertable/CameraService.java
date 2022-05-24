@@ -10,17 +10,13 @@ import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.TotalCaptureResult;
 import android.media.ImageReader;
 import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Surface;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import java.io.File;
 import java.util.Arrays;
 
 public class CameraService {
@@ -30,8 +26,6 @@ public class CameraService {
     private final String mCameraID;
     private CameraDevice mCameraDevice = null;
     private CameraCaptureSession mCaptureSession;
-    private ImageReader mImageReader;
-    private final File mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "test1.jpg");
     public static Bitmap image = null;
     //----------------------------------------------------------------------------------------------
 
@@ -43,50 +37,12 @@ public class CameraService {
 
     }
 
-    public void makePhoto() {
-
-
-        try {
-            // This is the CaptureRequest.Builder that we use to take a picture.
-            final CaptureRequest.Builder captureBuilder =
-                    mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-            captureBuilder.addTarget(mImageReader.getSurface());
-            CameraCaptureSession.CaptureCallback CaptureCallback = new CameraCaptureSession.CaptureCallback() {
-
-                @Override
-                public void onCaptureCompleted(@NonNull CameraCaptureSession session,
-                                               @NonNull CaptureRequest request,
-                                               @NonNull TotalCaptureResult result) {
-
-
-                }
-            };
-
-            mCaptureSession.stopRepeating();
-            mCaptureSession.abortCaptures();
-            mCaptureSession.capture(captureBuilder.build(), CaptureCallback, cameraActivity.mBackgroundHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-
-
-        }
-
-
-    }
 
 
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener
-            = new ImageReader.OnImageAvailableListener() {
+            = reader -> {
 
-        @Override
-        public void onImageAvailable(ImageReader reader) {
-
-            cameraActivity.mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
-
-
-        }
-
-    };
+            };
 
 
     private final CameraDevice.StateCallback mCameraCallback = new CameraDevice.StateCallback() {
@@ -116,7 +72,7 @@ public class CameraService {
 
     private void createCameraPreviewSession() {
 
-        mImageReader = ImageReader.newInstance(1920, 1080, ImageFormat.JPEG, 1);
+        ImageReader mImageReader = ImageReader.newInstance(1920, 1080, ImageFormat.JPEG, 1);
         mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, null);
 
         SurfaceTexture texture = cameraActivity.textureView.getSurfaceTexture();

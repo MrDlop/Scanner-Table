@@ -13,40 +13,46 @@
         android:layout_width="292dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.537"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
+
         <Button
             android:id="@+id/btChoosePath"
+            style="@style/RoundedCornerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/RoundedCornerButton"
-            android:text="@string/choose_path"/>
+            android:text="@string/choose_path" />
+
         <Button
             android:id="@+id/btAddVariant"
+            style="@style/RoundedCornerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/RoundedCornerButton"
-            android:text="@string/add_variant"/>
+            android:text="@string/add_variant" />
+
         <Button
             android:id="@+id/btChooseTemplate"
+            style="@style/RoundedCornerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/RoundedCornerButton"
             android:text="@string/choose_template" />
+
         <Button
             android:id="@+id/btCreateTemplate"
+            style="@style/RoundedCornerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/RoundedCornerButton"
             android:text="@string/create_template" />
+
         <Button
             android:id="@+id/btMainConfirm"
+            style="@style/RoundedCornerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/RoundedCornerButton"
-            android:text="@string/ok"/>
+            android:text="@string/ok" />
 
     </LinearLayout>
 

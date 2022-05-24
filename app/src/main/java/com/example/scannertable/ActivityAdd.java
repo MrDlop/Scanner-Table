@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -15,8 +14,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import java.io.File;
 
 public class ActivityAdd extends AppCompatActivity {
 
@@ -90,17 +87,6 @@ public class ActivityAdd extends AppCompatActivity {
     }
 
     private void enableRecognize() {
-        int[] arr = new int[2];
-        int[][] arrr = new int[1][4];
-        arr[0] = 210;
-        arr[1] = 297;
-        arrr[0][0] = 0;
-        arrr[0][1] = 0;
-        arrr[0][2] = 100;
-        arrr[0][3] = 100;
-        String[] ars = new String[1];
-        ars[0] = "P";
-        MainActivity.templateJSON = new TemplateJSON(1, arr, arrr, ars);
         Intent intent = new Intent(this, RecognizeActivity.class);
         startActivityForResult(intent, 9993);
 

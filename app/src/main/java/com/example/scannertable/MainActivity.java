@@ -1,8 +1,14 @@
 package com.example.scannertable;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -10,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +24,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -38,27 +47,44 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case 9999:
                 if (data != null) {
-                    path = data.getData().getPath().replace("/document/primary:",
-                            "/storage/emulated/0/");
+                    String ssss = Environment.getExternalStorageDirectory().getAbsolutePath();
+                    path = ssss + data.getData().getLastPathSegment().replace("primary:", "/");
                     Log.i("Test", "Result URI " + path);
                     WPath = true;
                 }
                 break;
+
             case 9998:
-                if (data != null) {
-                    Log.i("Test", "Result URI " + data.getData().getPath());
-                    Log.i("Test", "Result URI " + data.getData().toString());
-                    path = data.getData().getPath().replace("/document/primary:",
-                            "/storage/emulated/0/");
-                    File file = new File(path);
-                    WTmp = true;
+                if (resultCode == RESULT_OK && data != null) {
+                    Uri uri = data.getData();
+                    Log.i("Test", "Result URI: " + uri);
+                    File source = new File(uri.getPath());
+                    Log.i("Test","2) "+ source.toString());
+                    String filename = uri.getLastPathSegment();
+                    Log.i("Test","3) "+ filename);
+                    File destination = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/" + filename.replace("primary:", ""));
+                    Log.i("Test", "4) " + destination.toString());
+                    try {
+                        FileReader reader = new FileReader(destination.toString());
+                        String ss = "";
+                        int c;
+                        while((c=reader.read())!=-1){
+                            ss += (char)c;
+                        }
+                        templateJSON = JSONConverter(ss);
+                        Log.i("Test", "5) " + ss);
+                        WTmp = true;
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
+
                     // File reader
                 }
                 break;
         }
     }
 
-    public TemplateJSON getUser(String response) throws JSONException {
+    public TemplateJSON JSONConverter(String response) throws JSONException {
         JSONObject userJson = new JSONObject(response);
         int n = userJson.getInt("n");
         JSONArray sizeJSON = userJson.getJSONArray("size");
@@ -109,7 +135,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1
+            );
+        }
         Button btChoosePath = findViewById(R.id.btChoosePath);
         Button btAddVariant = findViewById(R.id.btAddVariant);
         Button btOK = findViewById(R.id.btMainConfirm);
@@ -127,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
         btChooseTemplate.setOnClickListener(view -> {
             Intent i = new Intent(Intent.ACTION_GET_CONTENT);
             i.setType("application/*");
+
+            i.addCategory(Intent.CATEGORY_OPENABLE);
             try {
                 startActivityForResult(
                         Intent.createChooser(i, "Select a File to Upload"),
