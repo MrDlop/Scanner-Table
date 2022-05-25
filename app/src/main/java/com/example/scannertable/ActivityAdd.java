@@ -19,6 +19,8 @@ public class ActivityAdd extends AppCompatActivity {
     //-----------------------------Initialize values------------------------------------------------
     private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
     private static final int CAMERA_REQUEST_CODE = 10;
+    private static final int RESULT_ACTIVITY_CAMERA = 9994;
+    private static final int RESULT_ACTIVITY_RECOGNIZE = 9995;
 
     public static boolean WPhoto = false;
     public ImageView imageView = null;
@@ -29,10 +31,10 @@ public class ActivityAdd extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case 9993:
+            case RESULT_ACTIVITY_RECOGNIZE:
                 finish();
                 break;
-            case 9994:
+            case RESULT_ACTIVITY_CAMERA:
                 if (CameraService.image != null) {
                     imageView.setImageBitmap(CameraService.image);
                 }
@@ -84,12 +86,12 @@ public class ActivityAdd extends AppCompatActivity {
 
     private void enableCamera() {
         Intent intent = new Intent(this, CameraActivity.class);
-        startActivityForResult(intent, 9994);
+        startActivityForResult(intent, RESULT_ACTIVITY_CAMERA);
     }
 
     private void enableRecognize() {
         Intent intent = new Intent(this, RecognizeActivity.class);
-        startActivityForResult(intent, 9993);
+        startActivityForResult(intent, RESULT_ACTIVITY_RECOGNIZE);
 
     }
 }

@@ -25,17 +25,21 @@ import org.json.JSONObject;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
     //-----------------------------Initialize values------------------------------------------------
     public static final String LOG_TAG = "Test";
 
     private static final int FILE_REQUEST_CODE = 11;
-    private final String[] FILE_PERMISSION = new String[]{READ_EXTERNAL_STORAGE,
+    private static final String[] FILE_PERMISSION = new String[]{READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static final int ACTIVITY_CHOOSE_TEMPLATE = 9998;
+    private static final int ACTIVITY_CHOOSE_PATH = 9999;
 
     public static TemplateJSON templateJSON;
     public static String path = null;
+    public static Vector<Vector<String>> data = new Vector<>();
 
 
     private boolean WTmp = false,
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case 9999:
+            case ACTIVITY_CHOOSE_PATH:
                 if (data != null) {
                     path = Environment.getExternalStorageDirectory().getAbsolutePath() +
                             data.getData().getLastPathSegment().replace("primary:", "/");
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
 
-            case 9998:
+            case ACTIVITY_CHOOSE_TEMPLATE:
                 if (resultCode == RESULT_OK && data != null) {
                     try {
                         String pathToTemplate = Environment.getExternalStorageDirectory().getAbsolutePath() +
@@ -133,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
             if (hasFilePermissions()) {
                 Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 i.addCategory(Intent.CATEGORY_DEFAULT);
-                startActivityForResult(Intent.createChooser(i, "Choose directory"), 9999);
+                startActivityForResult(Intent.createChooser(i, "Choose directory"),
+                        ACTIVITY_CHOOSE_PATH);
             } else {
                 requestPermission();
             }
@@ -150,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     startActivityForResult(
                             Intent.createChooser(i, "Select a File to Upload"),
-                            9998);
+                            ACTIVITY_CHOOSE_TEMPLATE);
                 } catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(MainActivity.this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
                 }
@@ -164,9 +169,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         btOK.setOnClickListener(view -> {
-            if(WPath){
+            if (WPath) {
 
-            }else{
+            } else {
                 Toast.makeText(MainActivity.this, "Path is None", Toast.LENGTH_SHORT).show();
             }
         });

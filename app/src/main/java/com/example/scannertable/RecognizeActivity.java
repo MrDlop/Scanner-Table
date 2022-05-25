@@ -18,7 +18,9 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Vector;
 
 public class RecognizeActivity extends AppCompatActivity {
 
@@ -31,6 +33,7 @@ public class RecognizeActivity extends AppCompatActivity {
         LinearLayout linear = findViewById(R.id.layout);
         int x1, x2, y1, y2;
         Log.i("Test", "ON");
+        MainActivity.data.add(new Vector<>(MainActivity.templateJSON.getN()));
         for (int i = 0; i < MainActivity.templateJSON.getN(); ++i) {
             int[] arr = MainActivity.templateJSON.getFieldN(i);
             x1 = arr[0];
@@ -53,6 +56,7 @@ public class RecognizeActivity extends AppCompatActivity {
             textView.setText(MainActivity.templateJSON.getFieldName(i));
             EditText text = view.findViewById(R.id.contentView);
             Log.i("Test", "Recognize text: " + resultText);
+            MainActivity.data.get(MainActivity.data.size() - 1).add(resultText);
             text.setText(resultText);
             linear.addView(view);
         }
