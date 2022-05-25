@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -29,14 +31,15 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = "Test";
 
     private static final int FILE_REQUEST_CODE = 11;
-    private static final String[] FILE_PERMISSION = new String[]{READ_EXTERNAL_STORAGE,
+    private final String[] FILE_PERMISSION = new String[]{READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     public static TemplateJSON templateJSON;
+    public static String path = null;
+
 
     private boolean WTmp = false,
             WPath = false;
-    private String path = null;
     //----------------------------------------------------------------------------------------------
 
 
@@ -49,8 +52,23 @@ public class MainActivity extends AppCompatActivity {
                 if (data != null) {
                     path = Environment.getExternalStorageDirectory().getAbsolutePath() +
                             data.getData().getLastPathSegment().replace("primary:", "/");
-                    Log.i(LOG_TAG, "Result URI " + path);
-                    WPath = true;
+                    Log.i(LOG_TAG, "Result path " + path);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Input file name");
+
+                    final EditText input = new EditText(this);
+                    builder.setView(input);
+                    builder.setPositiveButton("OK", (dialog, which) -> {
+                        path += input.getText().toString() + ".xlsx";
+                        Log.i(LOG_TAG, "Result path and update " + path);
+                        WPath = true;
+                    });
+                    builder.setNegativeButton("Cancel", (dialog, which) -> {
+                        WPath = false;
+                        dialog.cancel();
+                    });
+                    builder.show();
+
                 }
                 break;
 
@@ -146,6 +164,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         btOK.setOnClickListener(view -> {
+            if(WPath){
+
+            }else{
+                Toast.makeText(MainActivity.this, "Path is None", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

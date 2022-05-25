@@ -9,4 +9,6 @@
     <string name="add_variant">Add variant</string>
     <string name="json_text">JSON text</string>
     <string name="no_found">No found</string>
+    <string name="input_name_file">Введите название файла</string>
+    <string name="cancel">cansel</string>
 </resources>
