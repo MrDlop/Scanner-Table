@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 if (data != null) {
                     path = Environment.getExternalStorageDirectory().getAbsolutePath() +
                             data.getData().getLastPathSegment().replace("primary:", "/");
+                    if (path.charAt(path.length() - 1) != '/')
+                        path += "/";
                     Log.i(LOG_TAG, "Result path " + path);
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Input file name");
@@ -170,7 +172,8 @@ public class MainActivity extends AppCompatActivity {
         });
         btOK.setOnClickListener(view -> {
             if (WPath) {
-
+                ExcelService.createExcelWorkbook();
+                ExcelService.storeExcelInStorage(this, path);
             } else {
                 Toast.makeText(MainActivity.this, "Path is None", Toast.LENGTH_SHORT).show();
             }

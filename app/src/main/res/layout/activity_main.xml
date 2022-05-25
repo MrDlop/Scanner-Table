@@ -41,18 +41,19 @@
             android:text="@string/choose_template" />
 
         <Button
-            android:id="@+id/btCreateTemplate"
-            style="@style/RoundedCornerButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/create_template" />
-
-        <Button
             android:id="@+id/btMainConfirm"
             style="@style/RoundedCornerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ok" />
+
+        <Button
+            android:id="@+id/btCreateTemplate"
+            android:visibility="invisible"
+            style="@style/RoundedCornerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_template" />
 
     </LinearLayout>
 
