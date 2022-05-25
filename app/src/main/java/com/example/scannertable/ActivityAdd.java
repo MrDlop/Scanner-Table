@@ -92,6 +92,17 @@ public class ActivityAdd extends AppCompatActivity {
     }
 
     private void enableRecognize() {
+//        int[] arr = new int[2];
+//        int[][] arrr = new int[1][4];
+//        arr[0] = 210;
+//        arr[1] = 297;
+//        arrr[0][0] = 0;
+//        arrr[0][1] = 0;
+//        arrr[0][2] = 300;
+//        arrr[0][3] = 300;
+//        String[] ars = new String[1];
+//        ars[0] = "FIO";
+//        MainActivity.templateJSON = new TemplateJSON(1, arr, arrr, ars);
         Intent intent = new Intent(this, RecognizeActivity.class);
         startActivityForResult(intent, RESULT_ACTIVITY_RECOGNIZE);
 
