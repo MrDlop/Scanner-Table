@@ -64,7 +64,6 @@ public class CameraActivity extends AppCompatActivity {
 
         Button btConfirm = findViewById(R.id.btConfirm);
         textureView = findViewById(R.id.textureView);
-
         btConfirm.setOnClickListener(view -> {
             if (myCamera.isOpen()) {
                 myCamera.closeCamera();

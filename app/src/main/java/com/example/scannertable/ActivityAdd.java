@@ -23,6 +23,7 @@ public class ActivityAdd extends AppCompatActivity {
     private static final int RESULT_ACTIVITY_RECOGNIZE = 9995;
 
     public static boolean WPhoto = false;
+    public static boolean getResultActivityRecognize = false;
     public ImageView imageView = null;
     //----------------------------------------------------------------------------------------------
 
@@ -32,7 +33,8 @@ public class ActivityAdd extends AppCompatActivity {
 
         switch (requestCode) {
             case RESULT_ACTIVITY_RECOGNIZE:
-                finish();
+                if(getResultActivityRecognize)
+                    finish();
                 break;
             case RESULT_ACTIVITY_CAMERA:
                 if (CameraService.image != null) {

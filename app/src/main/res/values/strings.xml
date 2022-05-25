@@ -11,4 +11,5 @@
     <string name="no_found">No found</string>
     <string name="input_name_file">Введите название файла</string>
     <string name="cancel">cansel</string>
+    <string name="back">back</string>
 </resources>
